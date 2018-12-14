@@ -23,4 +23,6 @@ class Dungeon():
 		self.monsters.append(Monster(self.monsters_killed))
 
 	def reset_monster_queue(self):
-		monsters = deque()
+		self.monsters = deque()
+		self.monsters_killed = 0
+		self.generate_monster()

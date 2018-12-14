@@ -24,14 +24,14 @@ class DungeonController():
 		adventurer = party.adventurers[0]
 		self._resolve_attack(adventurer, monster)
 		if monster.curr_hp <= 0:
-			self.town.gold += monster.gold_reward
+			self.town.resources["Gold"] += monster.gold_reward
 			self.dungeon.monsters_killed += 1
 			self.next_monster()
 			return
 		self._resolve_attack(monster, adventurer)
 		if adventurer.curr_hp <= 0:
-			self.dungeon.monsters_killed = 0
 			self.dungeon.reset_monster_queue()
+			self.next_monster()
 			self.next_party()
 
 	def _resolve_attack(self, source, target):

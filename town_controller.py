@@ -10,7 +10,7 @@ class TownController():
 
 	def update_gold(self):
 		added_gold = self.calculate_gold_income()
-		self.town.gold += added_gold
+		self.town.resources["Gold"] += added_gold
 
 	def calculate_gold_income(self):
 		return 1
