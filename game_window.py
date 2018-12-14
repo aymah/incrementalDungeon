@@ -29,7 +29,6 @@ class GameWindow():
                     sys.exit()
                 if pygame.mouse.get_pressed()[0]:
                     self.town_panel_wrapper.execute_mouse_events(pygame.mouse.get_pos())
-                    self.town_panel_wrapper.town.buildings[1].build(self.town_panel_wrapper.town)
 
 
     def refresh_frame(self):

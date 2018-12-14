@@ -2,6 +2,7 @@ import sys, pygame
 from color import Color
 from town_controller import TownController
 from town import Town
+from button import Button
 
 class TownWindow():
 
@@ -11,14 +12,37 @@ class TownWindow():
         self.game_settings = game_settings 
         self.size = width, height = 640, 720
         self.position = width, height = 0, 0
-        self.panel = pygame.Surface((self.size), depth + 1, None)
+        self.depth = depth + 1
+        self.panel = pygame.Surface((self.size), self.depth, None)
         self.town_controller = TownController()
         self.town = self.town_controller.town
+        self.buttons = self._create_buttons()
+
+    def _create_buttons(self):
+        buttons = {}
+        y = 0
+        for building in self.town.buildings:
+            font = self.game_settings.helvetica10
+
+            text = building.name + ": " + str(building.number)
+            text_surface = font.render(text, True, Color.white, None)
+
+            text_surface_popup = self._build_cost_popup(building)
+            text_surface_active = font.render(text, True, Color.green, None)
+
+            w = text_surface.get_width()
+            h = text_surface.get_height()
+            button = Button(50, 350 + 15 * y, w, h, text_surface, text_surface_active, text_surface_popup, building.build(self.town))
+            buttons[building.name + " Add"] = button
+            y += 1
+        return buttons
 
     def execute_mouse_events(self, pos):
+        print("executing mouse events in town window")
         if self.check_position(pos):
-            #check collision with every actionable
-
+            for button_name, button in self.buttons.items():
+                if button.check_position(pos):
+                    button.execute_mouse_events()
 
     def check_position(self, pos):
         width, height = pos
@@ -35,7 +59,7 @@ class TownWindow():
 
     def _draw_text(self):
         self._draw_resources()
-        self._draw_buildings()
+        self._draw_buttons()
         self._draw_next_party()
 
 
@@ -49,14 +73,25 @@ class TownWindow():
             y += 1
 
 
-    def _draw_buildings(self):
+    def _draw_buttons(self):
+        for button_name, button in self.buttons.items():
+            button.draw(self.panel)
+
+
+    def _build_cost_popup(self, building):
+        font = self.game_settings.helvetica10
+        size = w, h = 100, 8 + len(building.cost) * 15
+        surface = pygame.Surface(size, self.depth + 1, None)
+        surface.fill(Color.white)
         y = 0
-        for building in self.town.buildings:
-            text = building.name + ": " + str(building.cost["Gold"])
-            text_surface = self.game_settings.helvetica10.render(text, True, Color.white, None)
-            text_position = width, height = 50, 350 + 15 * y
-            self.panel.blit(text_surface, text_position)
+        for resource, amount in building.cost.items():
+            text = resource + ": " + str(amount)
+            text_position = 5, 5 + 15 * y
+            text_surface = font.render(text, True, Color.black, None)
+            surface.blit(text_surface, text_position)
             y += 1
+
+        return surface
 
     def _draw_next_party(self):
         party = self.town.parties.popleft()

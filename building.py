@@ -6,6 +6,7 @@ class Building():
 		self.number = 0
 
 	def build(self, town):
+		print("Attempting to build")
 		can_afford = True
 		for resource, amount in self.cost.items():
 			if amount > town.resources[resource]:
