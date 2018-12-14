@@ -1,4 +1,4 @@
-import pygame
+import sys, pygame
 from color import Color
 from town_controller import TownController
 from town import Town
@@ -14,6 +14,17 @@ class TownWindow():
         self.panel = pygame.Surface((self.size), depth + 1, None)
         self.town_controller = TownController()
         self.town = self.town_controller.town
+
+    def execute_mouse_events(self, pos):
+        if self.check_position(pos):
+            #check collision with every actionable
+
+
+    def check_position(self, pos):
+        width, height = pos
+        if self.position[0] <= width <= self.position[0] + self.size[0] and self.position[1] <= height <= self.position[1] + self.size[1]:
+            return True
+        return False
 
     def refresh_frame(self):
         self._draw_bg()
