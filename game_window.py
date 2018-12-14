@@ -1,5 +1,6 @@
 import sys, pygame
 from town_window import TownWindow
+from dungeon_window import DungeonWindow
 from color import Color
 from game_settings import GameSettings
 
@@ -10,7 +11,8 @@ class GameWindow():
         self.size = width, height = self.game_settings.game_width, self.game_settings.game_height
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption('Incremental Dungeon')
-        self.town_panel_wrapper = TownWindow(0)
+        self.town_panel_wrapper = TownWindow(0, self.game_settings)
+        self.dungeon_panel_wrapper = DungeonWindow(0, self.game_settings, self.town_panel_wrapper)
 
 
     def run(self):
@@ -32,8 +34,11 @@ class GameWindow():
     def refresh_frame(self):
         self.screen.fill(Color.white)
         self.town_panel_wrapper.refresh_frame()
+        self.dungeon_panel_wrapper.refresh_frame()
         self.screen.blit(self.town_panel_wrapper.panel, self.town_panel_wrapper.position)
+        self.screen.blit(self.dungeon_panel_wrapper.panel, self.dungeon_panel_wrapper.position)
         pygame.display.flip()
 
     def update_state(self):
         self.town_panel_wrapper.update_state()
+        self.dungeon_panel_wrapper.update_state()

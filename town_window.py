@@ -7,7 +7,8 @@ class TownWindow():
 
 
 
-    def __init__(self, depth):
+    def __init__(self, depth, game_settings):
+        self.game_settings = game_settings 
         self.size = width, height = 640, 720
         self.position = width, height = 0, 0
         self.panel = pygame.Surface((self.size), depth + 1, None)
@@ -22,9 +23,8 @@ class TownWindow():
         self.panel.fill(Color.black)
 
     def _draw_text(self):
-        helvetica10 = pygame.font.SysFont("helvetica", 10)
         text = "Gold: " + str(self.town.gold)
-        text_surface = helvetica10.render(text, True, Color.white, None)
+        text_surface = self.game_settings.helvetica10.render(text, True, Color.white, None)
         text_position = width, height = 50, 50
         self.panel.blit(text_surface, text_position)
 

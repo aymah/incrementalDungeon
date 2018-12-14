@@ -1,3 +1,5 @@
+import pygame
+
 class GameSettings():
 
 	def __init__(self):
@@ -6,6 +8,8 @@ class GameSettings():
 		self.hz = 60
 		self.refresh_time = 1000/self.hz
 		self.update_time = 1000
+		self.helvetica10 = pygame.font.SysFont("helvetica", 10)
+
 
 	def set_game_width(self, width):
 		self.game_width = width
