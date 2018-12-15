@@ -29,6 +29,8 @@ class GameWindow():
                     sys.exit()
                 if pygame.mouse.get_pressed()[0]:
                     self.town_panel_wrapper.execute_mouse_events(pygame.mouse.get_pos())
+                    self.dungeon_panel_wrapper.execute_mouse_events(pygame.mouse.get_pos())
+
 
 
     def refresh_frame(self):

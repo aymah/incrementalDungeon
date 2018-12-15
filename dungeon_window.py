@@ -17,6 +17,19 @@ class DungeonWindow():
         self.dungeon = self.dungeon_controller.dungeon
         self.town_window.dungeon_window = self
 
+    def execute_mouse_events(self, pos):
+        if self.check_position(pos):
+            self.update_state()
+            # for button_name, button in self.buttons.items():
+            #     if button.check_position(pos):
+            #         button.execute_mouse_events()
+
+    def check_position(self, pos):
+        width, height = pos
+        if self.position[0] <= width <= self.position[0] + self.size[0] and self.position[1] <= height <= self.position[1] + self.size[1]:
+            return True
+        return False
+
     def refresh_frame(self):
         self._draw_bg()
         self._draw_text()
@@ -36,17 +49,21 @@ class DungeonWindow():
             name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
             name_text_position = width, height = 50, 50
             self.panel.blit(name_text_surface, name_text_position)
-            name_text =  "Level: " + str(party.adventurers[0].level)
+            name_text =  "Class: " + str(party.adventurers[0].adventurer_class.name)
             name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
             name_text_position = width, height = 50, 65
             self.panel.blit(name_text_surface, name_text_position)
+            name_text =  "Level: " + str(party.adventurers[0].level)
+            name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
+            name_text_position = width, height = 50, 80
+            self.panel.blit(name_text_surface, name_text_position)
             hp_text = "HP:   " + str(party.adventurers[0].curr_hp) + "/" + str(party.adventurers[0].max_hp)
             hp_text_surface = self.game_settings.helvetica10.render(hp_text, True, Color.black, None)
-            hp_text_position = width, height = 50, 80
+            hp_text_position = width, height = 50, 95
             self.panel.blit(hp_text_surface, hp_text_position)
             str_text = "STR:  " + str(party.adventurers[0].str)
             str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.black, None)
-            str_text_position = width, height = 50, 95
+            str_text_position = width, height = 50, 110
             self.panel.blit(str_text_surface, str_text_position)
         else:
             text = "There are no parties at this time"
