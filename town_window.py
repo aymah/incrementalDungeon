@@ -63,6 +63,7 @@ class TownWindow():
     def _draw_text(self):
         self._check_for_updates()
         self._draw_resources()
+        self._draw_equipment()
         self._draw_buttons()
         self._draw_next_party()
 
@@ -80,6 +81,22 @@ class TownWindow():
             text_position = width, height = 50, 50 + 15 * y
             self.panel.blit(text_surface, text_position)
             y += 1
+
+    def _draw_equipment(self):
+        y = 0
+        for name, amount in self.town.equipment.items():
+            text = name + ": " + str(amount)
+            text_surface = self.game_settings.helvetica10.render(text, True, Color.white, None)
+            text_position = width, height = 200, 50 + 15 * y
+            self.panel.blit(text_surface, text_position)
+
+            item = self.town.weapons[name]
+            text = str(item.craft_progress) + "/" + str(item.craft_time)
+            text_surface = self.game_settings.helvetica10.render(text, True, Color.white, None)
+            text_position = width, height = 325, 50 + 15 * y
+            self.panel.blit(text_surface, text_position)
+            y += 1
+
 
 
     def _draw_buttons(self):
@@ -108,28 +125,45 @@ class TownWindow():
         if party is not None:
             name_text = party.adventurers[0].name
             name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.white, None)
-            name_text_position = width, height = 350, 50
+            name_text_position = width, height = 400, 50
             self.panel.blit(name_text_surface, name_text_position)
-            name_text =  "Class: " + str(party.adventurers[0].adventurer_class.name)
+            class_name = ""
+            if party.adventurers[0].heroic:
+                class_name += "Heroic "
+            class_name += str(party.adventurers[0].adventurer_class.name)
+            name_text =  "Class: " + class_name
             name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.white, None)
-            name_text_position = width, height = 350, 65
+            name_text_position = width, height = 400, 65
             self.panel.blit(name_text_surface, name_text_position)
             name_text =  "Level: " + str(party.adventurers[0].level)
             name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.white, None)
-            name_text_position = width, height = 350, 80
+            name_text_position = width, height = 400, 80
             self.panel.blit(name_text_surface, name_text_position)
             hp_text = "HP:   " + str(party.adventurers[0].curr_hp) + "/" + str(party.adventurers[0].max_hp)
             hp_text_surface = self.game_settings.helvetica10.render(hp_text, True, Color.white, None)
-            hp_text_position = width, height = 350, 95
+            hp_text_position = width, height = 400, 95
             self.panel.blit(hp_text_surface, hp_text_position)
             str_text = "STR:  " + str(party.adventurers[0].str)
             str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.white, None)
-            str_text_position = width, height = 350, 110
+            str_text_position = width, height = 400, 110
             self.panel.blit(str_text_surface, str_text_position)
+            str_text = "Weapon:  " + str(party.adventurers[0].weapon.name)
+            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.white, None)
+            str_text_position = width, height = 400, 125
+            self.panel.blit(str_text_surface, str_text_position)
+            str_text = "EHP:  " + str(party.adventurers[0].get_ehp())
+            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.white, None)
+            str_text_position = width, height = 400, 140
+            self.panel.blit(str_text_surface, str_text_position)
+            str_text = "DPS:  " + str(party.adventurers[0].get_dps())
+            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.white, None)
+            str_text_position = width, height = 400, 155
+            self.panel.blit(str_text_surface, str_text_position)
+
         else:
             text = "There are no parties at this time"
             text_surface = self.game_settings.helvetica10.render(text, True, Color.white, None)
-            text_position = width, height = 350, 50
+            text_position = width, height = 400, 50
             self.panel.blit(text_surface, text_position)
 
 

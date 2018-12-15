@@ -10,6 +10,7 @@ class TownController():
 		self._update_wood()
 		self._update_pop()
 		self._update_space(dungeon_window)
+		self._update_crafting()
 
 	def _update_gold(self):
 		added_resource = self._calculate_gold_income()
@@ -54,3 +55,18 @@ class TownController():
 			if space_upkeep is not None:
 				total_upkeep += building_number * space_upkeep
 		return total_upkeep
+
+	def _update_crafting(self):
+		self.town.weapons["Wooden Gauntlets"].craft_progress += self.town.buildings["Gauntlet Forge"].number
+		self.town.weapons["Wooden Sword"].craft_progress += self.town.buildings["Swordsmith"].number
+		self.town.weapons["Wooden Bow"].craft_progress += self.town.buildings["Bowyer"].number
+
+		self._check_craft()
+
+	def _check_craft(self):
+		for weapon in self.town.weapons.values():
+			if weapon.craft_progress >= weapon.craft_time:
+				weapon.craft_progress -= weapon.craft_time
+				self.town.equipment[weapon.name] += 1
+
+	
