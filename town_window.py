@@ -17,6 +17,7 @@ class TownWindow():
         self.town_controller = TownController()
         self.town = self.town_controller.town
         self.buttons = self._create_buttons()
+        self.dungeon_window = None
 
     def _create_buttons(self):
         buttons = {}
@@ -129,4 +130,4 @@ class TownWindow():
 
 
     def update_state(self): #could add timescale to this function for multiple seconds?
-        self.town_controller.update_state()
+        self.town_controller.update_state(self.dungeon_window)

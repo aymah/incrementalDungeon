@@ -15,6 +15,7 @@ class DungeonWindow():
         self.town_window = town_window
         self.dungeon_controller = DungeonController(self.town_window)
         self.dungeon = self.dungeon_controller.dungeon
+        self.town_window.dungeon_window = self
 
     def refresh_frame(self):
         self._draw_bg()

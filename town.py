@@ -7,7 +7,7 @@ class Town():
 
 
 	def __init__(self):
-		self.resources = {"Population": 1, "Gold": 0, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
+		self.resources = {"Space": 5, "Population": 0, "Gold": 100, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
 		self.parties = deque()
 		self.buildings = self._generate_buildings()
 		self.generate_party() #placeholder

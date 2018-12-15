@@ -25,7 +25,7 @@ class Building():
 
 	def _increment_cost(self):
 		for resource, amount in self.cost.items():
-			self.cost[resource] = int(amount * 1.25)
+			self.cost[resource] = int(amount * self.cost_multiplier)
 
 	# def set_name(self, name):
 	# 	self.name = name
