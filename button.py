@@ -13,6 +13,16 @@ class Button():
         self.image3 = image3
         self.action = action
 
+    def clone(self, button):
+        self.x = button.x
+        self.y = button.y
+        self.w = button.w
+        self.h = button.h
+        self.image1 = button.image1
+        self.image2 = button.image2
+        self.image3 = button.image3
+        self.action = button.action
+
 
     def check_position(self, pos):
         width, height = pos
@@ -32,7 +42,8 @@ class Button():
         panel.blit(image, pos)
 
     def execute_mouse_events(self):
-        print ("executing mouse events in button")
         if self.action is not None:
-            print("calling the button action")
             self.action()
+
+    # def update(self, image1, image2, image3):
+

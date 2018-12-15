@@ -7,10 +7,16 @@ class Town():
 
 
 	def __init__(self):
-		self.resources = {"Gold": 0, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
+		self.resources = {"Population": 1, "Gold": 0, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
 		self.parties = deque()
-		self.buildings = BuildingList.building_list
+		self.buildings = self._generate_buildings()
 		self.generate_party() #placeholder
+
+	def _generate_buildings(self):
+		buildings = {}
+		for building in BuildingList.building_list:
+			buildings[building.name] = building
+		return buildings
 
 	def get_next_party(self):
 		self.generate_party() #placeholder
@@ -24,4 +30,4 @@ class Town():
 		return [Adventurer(self.starting_adven_level())]
 
 	def starting_adven_level(self):
-		return self.buildings[1].number
+		return self.buildings["Adventurer's Guild"].number

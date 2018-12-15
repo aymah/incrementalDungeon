@@ -20,25 +20,27 @@ class TownWindow():
 
     def _create_buttons(self):
         buttons = {}
-        y = 0
-        for building in self.town.buildings:
-            font = self.game_settings.helvetica10
-
-            text = building.name + ": " + str(building.number)
-            text_surface = font.render(text, True, Color.white, None)
-
-            text_surface_popup = self._build_cost_popup(building)
-            text_surface_active = font.render(text, True, Color.green, None)
-
-            w = text_surface.get_width()
-            h = text_surface.get_height()
-            button = Button(50, 350 + 15 * y, w, h, text_surface, text_surface_active, text_surface_popup, building.build(self.town))
+        for y, building in enumerate(self.town.buildings.values()):
+            button = self._create_button(building, y)
             buttons[building.name + " Add"] = button
-            y += 1
+            building.button = button
+            building.needs_update = False
         return buttons
 
+    def _create_button(self, building, y):
+        font = self.game_settings.helvetica10
+
+        text = building.name + ": " + str(building.number)
+        text_surface = font.render(text, True, Color.white, None)
+
+        text_surface_popup = self._build_cost_popup(building)
+        text_surface_active = font.render(text, True, Color.green, None)
+
+        w = text_surface.get_width()
+        h = text_surface.get_height()
+        return Button(50, 350 + 15 * y, w, h, text_surface, text_surface_active, text_surface_popup, lambda: building.build(self.town))
+
     def execute_mouse_events(self, pos):
-        print("executing mouse events in town window")
         if self.check_position(pos):
             for button_name, button in self.buttons.items():
                 if button.check_position(pos):
@@ -58,10 +60,16 @@ class TownWindow():
         self.panel.fill(Color.black)
 
     def _draw_text(self):
+        self._check_for_updates()
         self._draw_resources()
         self._draw_buttons()
         self._draw_next_party()
 
+    def _check_for_updates(self):
+        for y, building in enumerate(self.town.buildings.values()):
+            if building.needs_update:
+                building.button.clone(self._create_button(building, y))
+                building.needs_update = False
 
     def _draw_resources(self):
         y = 0
