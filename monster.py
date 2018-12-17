@@ -13,3 +13,6 @@ class Monster():
 
 	def get_dps(self):
 		return self.str
+
+	def get_mitigation(self):
+		return 1

@@ -42,52 +42,43 @@ class DungeonWindow():
         self._draw_monster()
         self._draw_misc()
 
+
     def _draw_party(self):
         party = self.dungeon.curr_party
+        text_color = Color.black
+        x = 50
+        y = 50
+        y_inc = 15
         if party is not None:
-
-            name_text = party.adventurers[0].name
-            name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
-            name_text_position = width, height = 50, 50
-            self.panel.blit(name_text_surface, name_text_position)
+            adventurer = party.adventurers[0]
+            text_list = []
+            text_list.append(adventurer.name)
             class_name = ""
-            if party.adventurers[0].heroic:
+            if adventurer.heroic:
                 class_name += "Heroic "
-            class_name += str(party.adventurers[0].adventurer_class.name)
-            name_text =  "Class: " + class_name            
-            name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
-            name_text_position = width, height = 50, 65
-            self.panel.blit(name_text_surface, name_text_position)
-            name_text =  "Level: " + str(party.adventurers[0].level)
-            name_text_surface = self.game_settings.helvetica10.render(name_text, True, Color.black, None)
-            name_text_position = width, height = 50, 80
-            self.panel.blit(name_text_surface, name_text_position)
-            hp_text = "HP:   " + str(party.adventurers[0].curr_hp) + "/" + str(party.adventurers[0].max_hp)
-            hp_text_surface = self.game_settings.helvetica10.render(hp_text, True, Color.black, None)
-            hp_text_position = width, height = 50, 95
-            self.panel.blit(hp_text_surface, hp_text_position)
-            str_text = "STR:  " + str(party.adventurers[0].str)
-            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.black, None)
-            str_text_position = width, height = 50, 110
-            self.panel.blit(str_text_surface, str_text_position)
-            str_text = "Weapon:  " + str(party.adventurers[0].weapon.name)
-            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.black, None)
-            str_text_position = width, height = 50, 125
-            self.panel.blit(str_text_surface, str_text_position)
-            str_text = "EHP:  " + str(party.adventurers[0].get_ehp())
-            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.black, None)
-            str_text_position = width, height = 50, 140
-            self.panel.blit(str_text_surface, str_text_position)
-            str_text = "DPS:  " + str(party.adventurers[0].get_dps())
-            str_text_surface = self.game_settings.helvetica10.render(str_text, True, Color.black, None)
-            str_text_position = width, height = 50, 155
-            self.panel.blit(str_text_surface, str_text_position)
-
+            class_name += str(adventurer.adventurer_class.name)
+            text_list.append("Class: " + class_name)
+            text_list.append("Level: " + str(adventurer.level))
+            text_list.append("HP:   " + str(adventurer.curr_hp) + "/" + str(adventurer.max_hp))
+            text_list.append("STR:  " + str(adventurer.str))
+            for slot, equip in adventurer.equipment.items():
+                text_list.append(slot + ":  " + str(equip.name))
+            text_list.append("EHP:  " + str(adventurer.get_ehp()))
+            text_list.append("DPS:  " + str(adventurer.get_dps()))
+            self._draw_text_list(text_list, x, y, 0, y_inc, text_color)
         else:
-            text = "There are no parties at this time"
-            text_surface = self.game_settings.helvetica10.render(text, True, Color.black, None)
-            text_position = width, height = 50, 50
-            self.panel.blit(text_surface, text_position)
+            self._draw_text_item("There are no parties at this time", x, y, text_color)
+
+    def _draw_text_list(self, text_list, x, y, x_inc, y_inc, text_color):
+        for text in text_list:
+            self._draw_text_item(text, x, y, text_color)
+            x += x_inc
+            y += y_inc
+
+    def _draw_text_item(self, text, x, y, text_color):
+        text_surface = self.game_settings.helvetica10.render(text, True, text_color, None)
+        text_position = x, y
+        self.panel.blit(text_surface, text_position)
 
 
     def _draw_monster(self):

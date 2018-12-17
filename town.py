@@ -1,7 +1,7 @@
 import random
 from collections import deque
 from party import Party
-from adventurer import Adventurer, Weapon, WeaponList
+from adventurer import Adventurer, Equipment, EquipmentList
 from adventurer_class import AdventurerClass, AdventurerClassList
 from building_list import BuildingList
 
@@ -9,12 +9,12 @@ class Town():
 
 
 	def __init__(self):
+		# self.resources = {"Space": 5, "Population": 0, "Gold": 1000000000, "Wood": 1000000000, "Stone": 1000000000, "Iron": 1000000000, "Crystal": 1000000000}
 		self.resources = {"Space": 5, "Population": 0, "Gold": 100, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
-		self.equipment = {"Wooden Gauntlets": 0, "Wooden Sword": 0, "Wooden Bow": 0}
 		self.parties = deque()
 		self.buildings = self._generate_buildings()
 		self.adventurer_classes = self._generate_adventurer_classes()
-		self.weapons = self._generate_weapons()
+		self.equipment = self._generate_equipment()
 		self.generate_party() #placeholder
 
 	def _generate_buildings(self):
@@ -29,11 +29,11 @@ class Town():
 			adventurer_classes[adventurer_class.name] = adventurer_class
 		return adventurer_classes
 
-	def _generate_weapons(self):
-		weapons = {}
-		for weapon in WeaponList.weapon_list:
-			weapons[weapon.name] = weapon
-		return weapons
+	def _generate_equipment(self):
+		equipment = {}
+		for equip in EquipmentList.equipment_list:
+			equipment[equip] = 0
+		return equipment
 
 	def get_next_party(self):
 		self.generate_party() #placeholder
@@ -46,7 +46,7 @@ class Town():
 	def generate_adventurer(self): #placeholder
 		adventurer_class = self._random_class()
 		adventurer = Adventurer(self.starting_adven_level(adventurer_class), adventurer_class, self._random_heroic())
-		adventurer.equip_weapon(self.equipment, self.weapons)
+		adventurer.equip_items(self.equipment)
 
 		return [adventurer]
 

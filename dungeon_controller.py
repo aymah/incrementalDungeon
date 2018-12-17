@@ -35,5 +35,6 @@ class DungeonController():
 			self.next_party()
 
 	def _resolve_attack(self, source, target):
-		damage = int(source.get_dps())
+		raw_damage = int(source.get_dps())
+		damage = int(raw_damage * target.get_mitigation())
 		target.curr_hp -= damage

@@ -57,16 +57,20 @@ class TownController():
 		return total_upkeep
 
 	def _update_crafting(self):
-		self.town.weapons["Wooden Gauntlets"].craft_progress += self.town.buildings["Gauntlet Forge"].number
-		self.town.weapons["Wooden Sword"].craft_progress += self.town.buildings["Swordsmith"].number
-		self.town.weapons["Wooden Bow"].craft_progress += self.town.buildings["Bowyer"].number
+		for equip in self.town.equipment.keys():
+			if equip.name == "Wooden Gauntlets":
+				equip.craft_progress += self.town.buildings["Gauntlet Forge"].number
+			if equip.name == "Wooden Sword":
+				equip.craft_progress += self.town.buildings["Swordsmith"].number
+			if equip.name == "Wooden Bow":
+				equip.craft_progress += self.town.buildings["Bowyer"].number
+			if equip.name == "Wooden Breastplate":
+				equip.craft_progress += self.town.buildings["Armorsmith"].number
+			if equip.name == "Wooden Tunic":
+				equip.craft_progress += self.town.buildings["Tailor"].number
+			if equip.craft_progress >= equip.craft_time:
+				equip.craft_progress -= equip.craft_time
+				self.town.equipment[equip] += 1
 
-		self._check_craft()
-
-	def _check_craft(self):
-		for weapon in self.town.weapons.values():
-			if weapon.craft_progress >= weapon.craft_time:
-				weapon.craft_progress -= weapon.craft_time
-				self.town.equipment[weapon.name] += 1
 
 	
