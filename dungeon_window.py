@@ -50,7 +50,11 @@ class DungeonWindow():
         y = 50
         y_inc = 15
         if party is not None:
-            adventurer = party.adventurers[0]
+            self._draw_adventurer(x, y, 0, y_inc, text_color, party.adventurers[0])
+        else:
+            self._draw_text_item("There are no parties at this time", x, y, text_color)
+
+    def _draw_adventurer(self, x, y, x_inc, y_inc, text_color, adventurer):
             text_list = []
             text_list.append(adventurer.name)
             class_name = ""
@@ -65,9 +69,11 @@ class DungeonWindow():
                 text_list.append(slot + ":  " + str(equip.name))
             text_list.append("EHP:  " + str(adventurer.get_ehp()))
             text_list.append("DPS:  " + str(adventurer.get_dps()))
+            text_list.append("Monsters Killed:  " + str(adventurer.monsters_killed))
+            text_list.append("Gold Earned:  " + str(adventurer.gold_earned))
+            text_list.append("Time Survived:  " + str(adventurer.time))
+
             self._draw_text_list(text_list, x, y, 0, y_inc, text_color)
-        else:
-            self._draw_text_item("There are no parties at this time", x, y, text_color)
 
     def _draw_text_list(self, text_list, x, y, x_inc, y_inc, text_color):
         for text in text_list:
@@ -107,14 +113,17 @@ class DungeonWindow():
             self.panel.blit(text_surface, text_position)
 
     def _draw_misc(self):
-        text = "Current Monsters Killed: " + str(self.dungeon.monsters_killed) + " monsters killed"
-        text_surface = self.game_settings.helvetica10.render(text, True, Color.black, None)
-        text_position = width, height = 50, 600
-        self.panel.blit(text_surface, text_position)
-        text = "Strongest Adventurer: " + str(self.dungeon.most_monsters_killed) + " monsters killed"
-        text_surface = self.game_settings.helvetica10.render(text, True, Color.black, None)
-        text_position = width, height = 300, 600
-        self.panel.blit(text_surface, text_position)
+        text_color = Color.black
+        self._draw_text_item("Last Adventurer:", 50, 500, text_color)
+        if self.dungeon.last_adventurer is not None:
+            self._draw_adventurer(50, 515, 0, 15, text_color, self.dungeon.last_adventurer)
+        else:
+            self._draw_text_item("No Last Adventurer", 50, 515, text_color)
+        self._draw_text_item("Greatest Adventurer:", 300, 500, text_color)
+        if self.dungeon.greatest_adventurer is not None:
+            self._draw_adventurer(300, 515, 0, 15, text_color, self.dungeon.greatest_adventurer)
+        else:
+            self._draw_text_item("No Greatest Adventurer", 300, 515, text_color)
 
     def update_state(self): #could add timescale to this function for multiple seconds?
         self.dungeon_controller.update_state()

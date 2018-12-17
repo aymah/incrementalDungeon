@@ -43,7 +43,10 @@ class TownController():
 		return total_upkeep
 
 	def _update_space(self, dungeon_window):
-		total_space = 5 + dungeon_window.dungeon.most_monsters_killed
+		additional_space = 0
+		if dungeon_window.dungeon.greatest_adventurer is not None:
+			additional_space = dungeon_window.dungeon.greatest_adventurer.monsters_killed
+		total_space = 5 + additional_space
 		used_space = self._calculate_used_space()
 		self.town.resources["Space"] = total_space - used_space
 

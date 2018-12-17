@@ -23,13 +23,18 @@ class DungeonController():
 	def _combat_round(self, party, monster):
 		adventurer = party.adventurers[0]
 		self._resolve_attack(adventurer, monster)
+		adventurer.time += 1
 		if monster.curr_hp <= 0:
 			self.town.resources["Gold"] += monster.gold_reward
+			adventurer.monsters_killed += 1
 			self.dungeon.monsters_killed += 1
+			adventurer.gold_earned += monster.gold_reward
 			self.next_monster()
 			return
 		self._resolve_attack(monster, adventurer)
 		if adventurer.curr_hp <= 0:
+			adventurer.curr_hp = adventurer.max_hp #might need to replace this with a "reset adventurer" function
+			self.dungeon.last_adventurer = adventurer
 			self.dungeon.reset_monster_queue()
 			self.next_monster()
 			self.next_party()

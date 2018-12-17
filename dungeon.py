@@ -9,7 +9,8 @@ class Dungeon():
 		self.curr_monster = None
 		self.monsters = deque()
 		self.monsters_killed = 0
-		self.most_monsters_killed = 0;
+		self.last_adventurer = None
+		self.greatest_adventurer = None
 		self.generate_monster()
 
 
@@ -18,8 +19,8 @@ class Dungeon():
 		return self.monsters.popleft()
 
 	def generate_monster(self): #placeholder 
-		if self.monsters_killed > self.most_monsters_killed:
-			self.most_monsters_killed = self.monsters_killed
+		if self.greatest_adventurer is None or self.greatest_adventurer.monsters_killed < self.last_adventurer.monsters_killed:
+			self.greatest_adventurer = self.last_adventurer
 		self.monsters.append(Monster(self.monsters_killed))
 
 	def reset_monster_queue(self):

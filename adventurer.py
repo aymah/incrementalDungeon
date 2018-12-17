@@ -15,6 +15,9 @@ class Adventurer():
 		self.str = self._randomize_str(level, adventurer_class) * (1 + int(heroic))
 		self.equipment = {}
 		self.equipment["Weapon"] = Equipment("Weapon", "Bare Fists", "Any", {"Atk": 1.0}, 0)
+		self.monsters_killed = 0
+		self.gold_earned = 0
+		self.time = 0
 
 	def _randomize_hp(self, level, adventurer_class):
 		base = random.randint(80 + level * 8, 120 + level * 12)
