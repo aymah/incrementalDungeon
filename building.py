@@ -13,6 +13,8 @@ class Building():
 	def build(self, town):
 		can_afford = True
 		for resource, amount in self.cost.items():
+			if resource not in town.resources:
+				return
 			if amount > town.resources[resource]:
 				can_afford = False
 		if can_afford:
