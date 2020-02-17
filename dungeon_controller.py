@@ -48,4 +48,4 @@ class DungeonController():
 		raw_damage = int(source.get_dps() * ability.stats["Atk"])
 		damage = int(raw_damage * target.get_mitigation())
 		target.curr_hp -= damage
-		last_attack = {"Attacker": source, "Defender": target, "Ability": ability, "Damage": damage}
+		self.last_attack = {"Attacker": source, "Defender": target, "Ability": ability, "Damage": damage}
