@@ -9,6 +9,7 @@ class DungeonController():
 		self.town = self.town_controller.town
 		self.next_party()
 		self.next_monster()
+		self.last_attack = None
 
 	def update_state(self):
 		if self.dungeon.curr_party is not None and self.dungeon.curr_monster is not None:
@@ -19,6 +20,9 @@ class DungeonController():
 
 	def next_monster(self):
 		self.dungeon.curr_monster = self.dungeon.get_next_monster()
+
+	def get_last_attack(self):
+		return self.last_attack
 
 	def _combat_round(self, party, monster):
 		adventurer = party.adventurers[0]
@@ -40,6 +44,8 @@ class DungeonController():
 			self.next_party()
 
 	def _resolve_attack(self, source, target):
-		raw_damage = int(source.get_dps())
+		ability = source.get_ability(target)
+		raw_damage = int(source.get_dps() * ability.stats["Atk"])
 		damage = int(raw_damage * target.get_mitigation())
 		target.curr_hp -= damage
+		last_attack = {"Attacker": source, "Defender": target, "Ability": ability, "Damage": damage}

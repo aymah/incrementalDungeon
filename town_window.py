@@ -143,6 +143,9 @@ class TownWindow():
                 text_list.append(slot + ":  " + str(equip.name))
             text_list.append("EHP:  " + str(adventurer.get_ehp()))
             text_list.append("DPS:  " + str(adventurer.get_dps()))
+            text_list.append("Abilities:")
+            for ability in adventurer.get_abilities():
+                text_list.append("               " + ability.name)
             self._draw_text_list(text_list, x, y, 0, y_inc, text_color)
         else:
             self._draw_text_item("There are no parties at this time", x, y, text_color)

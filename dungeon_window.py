@@ -124,6 +124,11 @@ class DungeonWindow():
             self._draw_adventurer(300, 515, 0, 15, text_color, self.dungeon.greatest_adventurer)
         else:
             self._draw_text_item("No Greatest Adventurer", 300, 515, text_color)
-
+        last_attack = self.dungeon_controller.get_last_attack()
+        self._draw_text_item("Last Move:", 50, 350, text_color)
+        if last_attack is not None:
+            self._draw_text_item(last_attack["Attacker"].name + " attacked " + last_attack["Defender"].name + " with " + last_attack["Ability"].name + " dealing " + last_attack["Damage"] + " damage.", 50, 365, text_color)
+        else:    
+            self._draw_text_item("No Last Move", 50, 365, text_color)
     def update_state(self): #could add timescale to this function for multiple seconds?
         self.dungeon_controller.update_state()

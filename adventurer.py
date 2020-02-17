@@ -1,4 +1,5 @@
 import random
+from ability import Ability
 
 class Adventurer():
 
@@ -11,11 +12,11 @@ class Adventurer():
 		self.curr_hp = self.max_hp
 		self.str = self._randomize_str(level, adventurer_class) * (1 + int(heroic))
 		self.equipment = {}
-		self.equipment["Weapon"] = Equipment("Weapon", "Bare Fists", "Any", {"Atk": 1.0}, 0)
+		self.equipment["Weapon"] = Equipment("Weapon", "Bare Fists", "Fist", {"Atk": 1.0}, [Ability("Punch", {"Fist"}, {"Atk": 1.0})], 0)
 		self.monsters_killed = 0
 		self.gold_earned = 0
 		self.time = 0
-		self.abilities = {}
+		self.abilities = []
 
 	def _randomize_hp(self, level, adventurer_class):
 		base = random.randint(80 + level * 8, 120 + level * 12)
@@ -49,8 +50,6 @@ class Adventurer():
 		for equip in self.equipment.values():
 			if "Armor" in equip.stat_mods:
 				armor += equip.stat_mods["Armor"]
-			for ability in equip.abilities.values():
-				abilities[ability.name] = ability
 		return armor
 
 	def get_mitigation(self):
@@ -67,22 +66,20 @@ class Adventurer():
 				equipment[equip] -= 1
 				self.equipment[slot] = equip
 
-class Ability():
-	def __init__(self, name, weapon_types, stats):
-		self.name = name
-		self.weapon_types = weapon_types
-		self.stats = stats
+	def get_abilities(self):
+		ability_list = []
+		ability_list.extend(self.abilities)
+		for equip in self.equipment.values():
+			ability_list.extend(equip.abilities)
+		return ability_list
 
-class AbilityList():
-	ability_list = [ \
-	Ability("Punch", {"Fist"}, {"Atk": 1.0}), \
-	Ability("Slash", {"Sword"}, {"Atk": 1.0}), \
-	Ability("Shoot", {"Bow"}, {"Atk": 1.0}), \
-	Ability("Test", {"Test"}, {"Atk": 1.0})]
+	def get_ability(self, target):
+		return random.choice(self.get_abilities())
+
 
 class Equipment():
 
-	def __init__(self, slot, name, equipment_type, stat_mods, abilities = {}, craft_time = 50):
+	def __init__(self, slot, name, equipment_type, stat_mods, abilities = [], craft_time = 50):
 		self.slot = slot
 		self.name = name
 		self.equipment_type = equipment_type
@@ -94,10 +91,10 @@ class Equipment():
 
 class EquipmentList():
 	equipment_list = [ \
-	Equipment("Weapon", "Bare Fists", "Fist", {"Atk": 1.0}, {Ability("Punch", {"Fist"}, {"Atk": 1.0})}, 0), \
-	Equipment("Weapon", "Wooden Sword", "Sword", {"Atk": 1.9}, {Ability("Slash", {"Sword"}, {"Atk": 1.0})}), \
-	Equipment("Weapon", "Wooden Gauntlets", "Fist", {"Armor": 20, "Atk": 1.1}, {Ability("Punch", {"Fist"}, {"Atk": 1.0})}), \
-	Equipment("Weapon", "Wooden Bow", "Bow", {"Atk": 2.5}, {Ability("Shoot", {"Bow"}, {"Atk": 1.0})}), \
+	Equipment("Weapon", "Bare Fists", "Fist", {"Atk": 1.0}, [Ability("Punch", {"Fist"}, {"Atk": 1.0})], 0), \
+	Equipment("Weapon", "Wooden Sword", "Sword", {"Atk": 1.9}, [Ability("Slash", {"Sword"}, {"Atk": 1.0})]), \
+	Equipment("Weapon", "Wooden Gauntlets", "Fist", {"Armor": 20, "Atk": 1.1}, [Ability("Punch", {"Fist"}, {"Atk": 1.0})]), \
+	Equipment("Weapon", "Wooden Bow", "Bow", {"Atk": 2.5}, [Ability("Shoot", {"Bow"}, {"Atk": 1.0})]), \
 	Equipment("Chest", "Wooden Breastplate", "medium_armor_type", {"Armor": 50}), \
 	Equipment("Chest", "Wooden Tunic", "light_armor_type", {"Armor": 30})]
 
