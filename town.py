@@ -9,8 +9,8 @@ class Town():
 
 
 	def __init__(self):
-		# self.resources = {"Space": 5, "Population": 0, "Gold": 1000000000, "Wood": 1000000000, "Stone": 1000000000, "Iron": 1000000000, "Crystal": 1000000000}
-		self.resources = {"Space": 5, "Population": 0, "Gold": 100, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
+		self.resources = {"Space": 5, "Population": 0, "Gold": 1000000000, "Wood": 1000000000, "Stone": 1000000000, "Iron": 1000000000, "Crystal": 1000000000}
+		# self.resources = {"Space": 5, "Population": 0, "Gold": 100, "Wood": 0, "Stone": 0, "Iron": 0, "Crystal": 0}
 		self.parties = deque()
 		self.buildings = self._generate_buildings()
 		self.adventurer_classes = self._generate_adventurer_classes()

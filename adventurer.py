@@ -1,8 +1,5 @@
 import random
 
-medium_armor_type = ["Brawler", "Swordsman"]
-light_armor_type = ["Archer"]
-
 class Adventurer():
 
 	def __init__(self, level, adventurer_class, heroic):
@@ -18,6 +15,7 @@ class Adventurer():
 		self.monsters_killed = 0
 		self.gold_earned = 0
 		self.time = 0
+		self.abilities = {}
 
 	def _randomize_hp(self, level, adventurer_class):
 		base = random.randint(80 + level * 8, 120 + level * 12)
@@ -51,6 +49,8 @@ class Adventurer():
 		for equip in self.equipment.values():
 			if "Armor" in equip.stat_mods:
 				armor += equip.stat_mods["Armor"]
+			for ability in equip.abilities.values():
+				abilities[ability.name] = ability
 		return armor
 
 	def get_mitigation(self):
@@ -63,27 +63,41 @@ class Adventurer():
 
 	def _equip_item(self, slot, equipment):
 		for equip, amount in equipment.items():
-			if amount > 0 and equip.slot == slot and self.adventurer_class.name in equip.adventurer_class_names:
+			if amount > 0 and equip.slot == slot and equip.equipment_type in self.adventurer_class.weapon_types:
 				equipment[equip] -= 1
 				self.equipment[slot] = equip
 
+class Ability():
+	def __init__(self, name, weapon_types, stats):
+		self.name = name
+		self.weapon_types = weapon_types
+		self.stats = stats
+
+class AbilityList():
+	ability_list = [ \
+	Ability("Punch", {"Fist"}, {"Atk": 1.0}), \
+	Ability("Slash", {"Sword"}, {"Atk": 1.0}), \
+	Ability("Shoot", {"Bow"}, {"Atk": 1.0}), \
+	Ability("Test", {"Test"}, {"Atk": 1.0})]
+
 class Equipment():
 
-	def __init__(self, slot, name, adventurer_class_names, stat_mods, craft_time = 50):
+	def __init__(self, slot, name, equipment_type, stat_mods, abilities = {}, craft_time = 50):
 		self.slot = slot
 		self.name = name
-		self.adventurer_class_names = adventurer_class_names
+		self.equipment_type = equipment_type
 		self.stat_mods = stat_mods
 		self.craft_time = craft_time
+		self.abilities = abilities
 		self.craft_progress = 0
 
 
 class EquipmentList():
-
 	equipment_list = [ \
-	Equipment("Weapon", "Bare Fists", "Any", {"Atk": 1.0}, 0), \
-	Equipment("Weapon", "Wooden Sword", ["Swordsman"], {"Atk": 1.9}), \
-	Equipment("Weapon", "Wooden Gauntlets", ["Brawler"], {"Armor": 20, "Atk": 1.1}), \
-	Equipment("Weapon", "Wooden Bow", ["Archer"], {"Atk": 2.5}), \
-	Equipment("Chest", "Wooden Breastplate", medium_armor_type, {"Armor": 50}), \
-	Equipment("Chest", "Wooden Tunic", light_armor_type, {"Armor": 30})]
+	Equipment("Weapon", "Bare Fists", "Fist", {"Atk": 1.0}, {Ability("Punch", {"Fist"}, {"Atk": 1.0})}, 0), \
+	Equipment("Weapon", "Wooden Sword", "Sword", {"Atk": 1.9}, {Ability("Slash", {"Sword"}, {"Atk": 1.0})}), \
+	Equipment("Weapon", "Wooden Gauntlets", "Fist", {"Armor": 20, "Atk": 1.1}, {Ability("Punch", {"Fist"}, {"Atk": 1.0})}), \
+	Equipment("Weapon", "Wooden Bow", "Bow", {"Atk": 2.5}, {Ability("Shoot", {"Bow"}, {"Atk": 1.0})}), \
+	Equipment("Chest", "Wooden Breastplate", "medium_armor_type", {"Armor": 50}), \
+	Equipment("Chest", "Wooden Tunic", "light_armor_type", {"Armor": 30})]
+

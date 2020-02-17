@@ -3,13 +3,16 @@
 
 class AdventurerClass():
 
-	def __init__(self, name, stat_mods):
+	def __init__(self, name, stat_mods, weapon_types):
 		self.name = name
 		self.stat_mods = stat_mods
+		self.weapon_types = weapon_types
+
+
 
 class AdventurerClassList():
 	adventurer_class_list = [ \
-	AdventurerClass("Peasant", {"HP": 1.0, "Str": .6}), \
-	AdventurerClass("Brawler", {"HP": 1.2, "Str": 1.0}), \
-	AdventurerClass("Swordsman", {"HP": 1.0, "Str": 0.8}), \
-	AdventurerClass("Archer", {"HP": .6, "Str": .7})]
+	AdventurerClass("Peasant", {"HP": 1.0, "Str": .6}, {"Fist", "no_armor_type"}), \
+	AdventurerClass("Brawler", {"HP": 1.2, "Str": 1.0}, {"Fist", "medium_armor_type"}), \
+	AdventurerClass("Swordsman", {"HP": 1.0, "Str": 0.8}, {"Fist", "Sword", "medium_armor_type"}), \
+	AdventurerClass("Archer", {"HP": .6, "Str": .7}, {"Fist", "Bow", "light_armor_type"})]
